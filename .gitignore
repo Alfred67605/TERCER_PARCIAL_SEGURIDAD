@@ -1,0 +1,17 @@
+# Dependency directories
+node_modules/
+dist/
+
+# Environment variables — NEVER commit real secrets
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/

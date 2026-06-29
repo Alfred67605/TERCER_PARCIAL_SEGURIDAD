@@ -1,0 +1,22 @@
+meta {
+  name: 05 - ESCENARIO C - Listar notas Usuario A
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/notes
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+docs {
+  # Escenario C
+  GET /notes lista ÚNICAMENTE las notas del usuario autenticado.
+  
+  ✅ Resultado esperado: 200 con arreglo que solo contiene notas de Usuario A.
+}

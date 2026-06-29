@@ -1,0 +1,22 @@
+meta {
+  name: 11 - GET auth-me (perfil usuario)
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+docs {
+  # GET /auth/me
+  Retorna los datos del usuario autenticado SIN incluir el campo password.
+  
+  ✅ Resultado esperado: { id, email, createdAt } — sin 'password' en la respuesta.
+}

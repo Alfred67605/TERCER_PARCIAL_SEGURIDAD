@@ -1,0 +1,23 @@
+meta {
+  name: 12 - GET auth-sessions (sesiones activas)
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/auth/sessions
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+docs {
+  # GET /auth/sessions
+  Lista todas las sesiones activas (no revocadas, no expiradas) del usuario.
+  
+  ✅ Resultado esperado: arreglo de sesiones con sessionId, userAgent, createdAt, expiresAt.
+  NOTA: No incluye el hashedToken por seguridad.
+}

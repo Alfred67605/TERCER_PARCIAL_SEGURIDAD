@@ -1,0 +1,531 @@
+{
+  "info": {
+    "_postman_id": "8c35e807-6c39-4d64-be23-c3be6d6c9ff9",
+    "name": "SecureNotes API",
+    "description": "Colección de pruebas para el Examen de Seguridad de Software (SecureNotes API)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Registro Usuario A",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"usuarioa@test.com\",\n  \"password\": \"Password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    var jsonData = pm.response.json();",
+              "    pm.collectionVariables.set(\"accessToken\", jsonData.accessToken);",
+              "    var setCookie = pm.response.headers.get(\"Set-Cookie\");",
+              "    if (setCookie) {",
+              "        var match = setCookie.match(/refresh_token=([^;]+)/);",
+              "        if (match) {",
+              "            pm.collectionVariables.set(\"oldRefreshToken\", match[1]);",
+              "        }",
+              "    }",
+              "    pm.test(\"Registro exitoso\", function () {",
+              "        pm.response.to.have.status(201);",
+              "    });",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Login Usuario A",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"usuarioa@test.com\",\n  \"password\": \"Password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    var jsonData = pm.response.json();",
+              "    pm.collectionVariables.set(\"accessToken\", jsonData.accessToken);",
+              "    var setCookie = pm.response.headers.get(\"Set-Cookie\");",
+              "    if (setCookie) {",
+              "        var match = setCookie.match(/refresh_token=([^;]+)/);",
+              "        if (match) {",
+              "            pm.collectionVariables.set(\"oldRefreshToken\", match[1]);",
+              "        }",
+              "    }",
+              "    pm.test(\"Login exitoso\", function () {",
+              "        pm.response.to.have.status(200);",
+              "    });",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - ESCENARIO B - GET notes sin token (401)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/notes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "notes"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Debe retornar 401 Unauthorized sin token\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - ESCENARIO C - Crear nota Usuario A",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Mi primera nota\",\n  \"content\": \"Contenido secreto de la nota de Usuario A\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/notes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "notes"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    var jsonData = pm.response.json();",
+              "    pm.collectionVariables.set(\"noteId\", jsonData.id);",
+              "    pm.test(\"Nota creada exitosamente\", function () {",
+              "        pm.response.to.have.status(201);",
+              "    });",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - ESCENARIO C - Listar notas Usuario A",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/notes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "notes"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Listar notas exitoso\", function () {",
+              "    pm.response.to.have.status(200);",
+              "    var data = pm.response.json();",
+              "    pm.expect(data).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Registrar Usuario B",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"usuariob@test.com\",\n  \"password\": \"Password456\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    var jsonData = pm.response.json();",
+              "    pm.collectionVariables.set(\"accessTokenB\", jsonData.accessToken);",
+              "    pm.test(\"Registro B exitoso\", function () {",
+              "        pm.response.to.have.status(201);",
+              "    });",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - ESCENARIO D - Usuario B intenta GET nota de A (404)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessTokenB}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/notes/{{noteId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "notes",
+            "{{noteId}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Debe retornar 404 Not Found para notas ajenas\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - ESCENARIO E - Refresh token (renovar access)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/auth/refresh",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "refresh"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    var jsonData = pm.response.json();",
+              "    pm.collectionVariables.set(\"accessToken\", jsonData.accessToken);",
+              "    pm.test(\"Token renovado con éxito\", function () {",
+              "        pm.response.to.have.status(200);",
+              "    });",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 - ESCENARIO F - Reutilizar refresh rotado (403)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "refresh_token={{oldRefreshToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/refresh",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "refresh"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Reuso del token debe retornar 403 Forbidden\", function () {",
+              "    pm.response.to.have.status(403);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 - ESCENARIO G - Logout y refresh posterior falla (401)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/auth/logout",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Logout exitoso\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 - GET auth-me (perfil usuario)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/auth/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "me"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Perfil obtenido. No debe tener campo password\", function () {",
+              "    pm.response.to.have.status(200);",
+              "    var data = pm.response.json();",
+              "    pm.expect(data).to.not.have.property('password');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 - GET auth-sessions (sesiones activas)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/auth/sessions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "sessions"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Sesiones obtenidas con éxito\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "accessTokenB",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "noteId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

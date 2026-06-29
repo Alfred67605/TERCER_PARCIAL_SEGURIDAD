@@ -1,0 +1,18 @@
+meta {
+  name: 03 - ESCENARIO B - GET notes sin token (401)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/notes
+  body: none
+  auth: none
+}
+
+docs {
+  # Escenario B
+  Una petición a /notes sin access token debe responder **401 Unauthorized**.
+  
+  ✅ Resultado esperado: 401
+}

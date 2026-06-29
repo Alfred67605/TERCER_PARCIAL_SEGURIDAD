@@ -1,0 +1,24 @@
+meta {
+  name: 07 - ESCENARIO D - Usuario B intenta GET nota de A (404)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/notes/{{noteId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessTokenB}}
+}
+
+docs {
+  # Escenario D
+  Usuario B (con su propio token válido) intenta GET sobre una nota de Usuario A.
+  
+  ✅ Resultado esperado: **404 Not Found** (nunca 403, para no revelar existencia del recurso)
+  
+  NOTA: Primero ejecutar requests 04 y 06 para tener {{noteId}} y {{accessTokenB}}.
+}
