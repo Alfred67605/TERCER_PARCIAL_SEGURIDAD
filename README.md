@@ -6,14 +6,14 @@ Este proyecto evalúa y aplica los mecanismos de seguridad para las unidades de 
 
 ---
 
-## 🛠️ Requisitos Previos
+## Requisitos Previos
 
 - **Node.js**: v20 LTS o superior.
 - **PostgreSQL**: v14 o superior.
 
 ---
 
-## 🚀 Pasos de Ejecución
+## Pasos de Ejecución
 
 ### 1. Clonación e Instalación de Dependencias
 Una vez clonado el repositorio, entra en el directorio del proyecto e instala todas las dependencias requeridas:
@@ -57,18 +57,18 @@ Inicia el servidor en modo desarrollo:
 npm run start:dev
 ```
 Una vez iniciado, la consola mostrará el inicio de la aplicación y el mapeo de todas las rutas:
-`🚀 SecureNotes API running on http://localhost:3000`
+`SecureNotes API running on http://localhost:3000`
 
 Las tablas correspondientes (`users`, `notes` y `refresh_tokens`) se crearán automáticamente gracias a TypeORM (sincronización activa únicamente en desarrollo).
 
 ---
 
-## 🧪 Pruebas de Validación (Postman)
+## Pruebas de Validación (Postman)
 
 El proyecto incluye una colección preconfigurada para probar de forma ordenada y automatizada todos los escenarios de seguridad solicitados.
 
 El archivo de la colección se encuentra en:
-👉 `PRUEBAS/securenotes_postman_collection.json`
+- `PRUEBAS/securenotes_postman_collection.json`
 
 ### Cómo utilizar la colección:
 1. Abre **Postman** e importa el archivo `PRUEBAS/securenotes_postman_collection.json`.
@@ -85,7 +85,7 @@ El archivo de la colección se encuentra en:
 
 ---
 
-## 🔒 Mecanismos de Seguridad Implementados
+## Mecanismos de Seguridad Implementados
 
 1. **Argon2 Password Hashing:** Las contraseñas se encriptan inmediatamente en el registro con `argon2` y nunca se almacenan o exponen en texto plano.
 2. **DTO Validation:** Entrada de datos estrictamente saneada con `class-validator` y `ValidationPipe` en modo whitelist/forbidNonWhitelisted.
