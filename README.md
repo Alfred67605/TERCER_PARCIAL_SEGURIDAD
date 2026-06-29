@@ -68,10 +68,10 @@ Las tablas correspondientes (`users`, `notes` y `refresh_tokens`) se crearán au
 El proyecto incluye una colección preconfigurada para probar de forma ordenada y automatizada todos los escenarios de seguridad solicitados.
 
 El archivo de la colección se encuentra en:
-👉 `securenotes_postman_collection.json`
+👉 `PRUEBAS/securenotes_postman_collection.json`
 
 ### Cómo utilizar la colección:
-1. Abre **Postman** e importa el archivo `securenotes_postman_collection.json`.
+1. Abre **Postman** e importa el archivo `PRUEBAS/securenotes_postman_collection.json`.
 2. Se cargará la colección **SecureNotes API** con 12 peticiones ordenadas numéricamente del `01` al `12`.
 3. Ejecútalas en orden secuencial para simular y validar todos los flujos del examen:
    - **Registro y Login (`01` y `02`)**: Registra al *Usuario A*, inicia su sesión y genera las cookies seguras httpOnly correspondientes.
